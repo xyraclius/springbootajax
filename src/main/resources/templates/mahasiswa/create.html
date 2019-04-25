@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<form id="CreateMahasiswaForm" method="post"
+	th:action="@{mahasiswa/saveMahasiswa}">
+	<div class="form-group">
+		<label class="control-label">Nama</label> <input type="text"
+			name="nama" class="form-control" title="Nama Mahasiswa"
+			placeholder="Nama Anda" autocomplete="off" />
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">Jurusan</label> <input type="text"
+			name="jurusan" class="form-control" title="Jurusan Mahasiswa"
+			placeholder="Jurusan Anda" autocomplete="off" />
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		<button type="submit" class="btn btn-primary">Save</button>
+	</div>
+</form>
+</html>

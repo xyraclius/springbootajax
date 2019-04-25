@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot AJAX</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="col-lg-10">
+		<button type="button" id="btnCreateNew" class="btn btn-primary"
+			title="Create New Mahasiswa" style="margin-bottom: 10px">
+			Create New</button>
+
+		<table class="table table-bordered table-striped table-hover">
+			<thead>
+				<tr>
+					<th>NIM</th>
+					<th>Nama</th>
+					<th>Jurusan</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+	<div id="modal-input" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 id="modalTitle"></h4>
+				</div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		th:src="@{webjars/jquery/3.4.0/jquery.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			$('#btnCreateNew').on('click', function() {
+				$.ajax({
+					url : 'mahasiswa/create',
+					type : 'get',
+					dataType : 'html',
+					success : function(data) {
+						$("#modalTitle").text("Create New Mahasiswa");
+						$("#modal-input").find(".modal-body").html(data);
+						$("#modal-input").modal('show');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>
