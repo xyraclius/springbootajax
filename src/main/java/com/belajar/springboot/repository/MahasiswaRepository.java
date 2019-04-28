@@ -1,13 +1,10 @@
 package com.belajar.springboot.repository;
 
-import java.util.UUID;
-
+import com.belajar.springboot.model.MahasiswaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.belajar.springboot.model.MahasiswaModel;
+import java.util.UUID;
 
 public interface MahasiswaRepository extends JpaRepository<MahasiswaModel, UUID> {
-	
-	
-	
+    MahasiswaModel findByNim(UUID nim);
 }
