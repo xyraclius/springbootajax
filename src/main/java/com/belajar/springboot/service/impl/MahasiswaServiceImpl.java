@@ -12,21 +12,26 @@ import java.util.UUID;
 @Service
 public class MahasiswaServiceImpl implements MahasiswaService {
 
-	@Autowired
-	MahasiswaRepository mahasiswaRepository;
+    @Autowired
+    MahasiswaRepository mahasiswaRepository;
 
-	@Override
-	public MahasiswaModel save(MahasiswaModel mahasiswaModel) {
-		return mahasiswaRepository.save(mahasiswaModel);
-	}
+    @Override
+    public MahasiswaModel save(MahasiswaModel mahasiswaModel) {
+        return mahasiswaRepository.save(mahasiswaModel);
+    }
 
-	@Override
-	public List<MahasiswaModel> findAll() {
-		return mahasiswaRepository.findAll();
-	}
+    @Override
+    public List<MahasiswaModel> findAll() {
+        return mahasiswaRepository.findAll();
+    }
 
-	@Override
-	public MahasiswaModel findByNim(UUID nim) {
-		return mahasiswaRepository.findByNim(nim);
-	}
+    @Override
+    public MahasiswaModel findByNim(UUID nim) {
+        return mahasiswaRepository.findByNim(nim);
+    }
+
+    @Override
+    public void delete(MahasiswaModel mahasiswaModel) {
+        mahasiswaRepository.delete(mahasiswaModel);
+    }
 }

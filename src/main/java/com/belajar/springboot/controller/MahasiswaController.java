@@ -23,20 +23,29 @@ public class MahasiswaController {
         return "index";
     }
 
-    @GetMapping("mahasiswa/create")
-    private String createNew() {
-        return "mahasiswa/create";
+    @GetMapping("mahasiswa/new")
+    private String createNew(Model model) {
+        model.addAttribute("mahasiswaModel", new MahasiswaModel());
+        return "mahasiswa/form";
     }
 
-    @GetMapping("mahasiswa/edit")
-    private String editMahasiswa(@RequestParam UUID nim) {
+    @GetMapping("mahasiswa/update")
+    private String editMahasiswa(@RequestParam UUID nim, Model model) {
         MahasiswaModel mahasiswaModel = mahasiswaService.findByNim(nim);
-        return "mahasiswa/create";
+        model.addAttribute("mahasiswaModel", mahasiswaModel);
+        return "mahasiswa/form";
     }
 
-    @PostMapping(value = "mahasiswa/saveMahasiswa")
-    private String saveMahasiswa(MahasiswaModel mahasiswaModel) {
+    @PostMapping("mahasiswa/saveOrUpdate")
+    private String saveOrUpdateMahasiswa(MahasiswaModel mahasiswaModel) {
         mahasiswaService.save(mahasiswaModel);
-        return "redirect:../";
+        return "redirect:/";
+    }
+
+    @GetMapping("mahasiswa/delete")
+    private String deleteReportCategory(@RequestParam UUID nim) {
+        MahasiswaModel mahasiswaModel = mahasiswaService.findByNim(nim);
+        mahasiswaService.delete(mahasiswaModel);
+        return "redirect:/";
     }
 }

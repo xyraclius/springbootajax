@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface MahasiswaService {
-	MahasiswaModel save(MahasiswaModel mahasiswaModel);
-	
-	List<MahasiswaModel> findAll();
+    MahasiswaModel save(MahasiswaModel mahasiswaModel);
 
-	MahasiswaModel findByNim(UUID nim);
+    List<MahasiswaModel> findAll();
+
+    MahasiswaModel findByNim(UUID nim);
+
+    void delete(MahasiswaModel mahasiswaModel);
 }

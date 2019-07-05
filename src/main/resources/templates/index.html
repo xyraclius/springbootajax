@@ -3,34 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Spring Boot AJAX</title>
-    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
-          type="text/css"/>
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css}" type="text/css"/>
+    <style>
+        #btnCreateNew {
+            position: relative;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <div class="col-lg-10">
-    <button class="btn btn-primary" id="btnCreateNew" style="margin-bottom: 10px"
-            title="Create New Mahasiswa" type="button">
-        Create New
-    </button>
-
-    <table class="table table-bordered table-striped table-hover" id="mahasiswaTable">
-        <thead>
-        <tr>
-            <th>NIM</th>
-            <th>Nama</th>
-            <th>Jurusan</th>
-            <th>Action</th>
-        </tr>
-        <tr th:each="mhs : ${mahasiswaList}">
-            <td th:text="${mhs.nim}"></td>
-            <td th:text="${mhs.nama}"></td>
-            <td th:text="${mhs.jurusan}"></td>
-            <td>
-                <button class="btn btn-success" id="btnEdit" th:value="${mhs.nim}">Edit</button>
-            </td>
-        </tr>
-        </thead>
-    </table>
+    <div class="table">
+        <button class="btn btn-primary" id="btnCreateNew" title="Create New Mahasiswa" type="button">
+            Create New
+        </button>
+        <table class="table-striped table-bordered" id="mahasiswaTable" style="width:100%">
+            <thead>
+            <tr>
+                <th>NIM</th>
+                <th>Nama</th>
+                <th>Jurusan</th>
+                <th>Aksi</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mhs : ${mahasiswaList}">
+                <td th:text="${mhs.nim}"></td>
+                <td th:text="${mhs.nama}"></td>
+                <td th:text="${mhs.jurusan}"></td>
+                <td>
+                    <button class="btn btn-danger" id="btnDelete" th:title="${'Delete Mahsiswa= '+ mhs.nama}"
+                            th:value="${mhs.nim}"> Delete
+                    </button>
+                    <button class="btn btn-success" id="btnEdit"
+                            th:title="${'Edit Mahsiswa= '+ mhs.nama}"
+                            th:value="${mhs.nim}"> Edit
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Nim</th>
+                <th>Nama</th>
+                <th>Jurusan</th>
+                <th>Aksi</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 <div class="modal fade" id="modal-input">
@@ -44,15 +69,19 @@
     </div>
 </div>
 
-<script th:src="@{webjars/jquery/3.4.0/jquery.min.js}"
-        type="text/javascript"></script>
-<script th:src="@{webjars/bootstrap/4.3.1/js/bootstrap.min.js}"
-        type="text/javascript"></script>
+<script th:src="@{webjars/jquery/3.4.0/jquery.min.js}" type="text/javascript"></script>
+<script th:src="@{webjars/bootstrap/4.3.1/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{webjars/datatables/1.10.19/js/jquery.dataTables.min.js}" type="text/javascript"></script>
+<script th:src="@{webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}" type="text/javascript"></script>
+
 <script th:inline="javascript">
     $(document).ready(function () {
+        let mahasiswaTable = $("#mahasiswaTable");
+        mahasiswaTable.DataTable();
+
         $('#btnCreateNew').on('click', function () {
             $.ajax({
-                url: 'mahasiswa/create',
+                url: 'mahasiswa/new',
                 type: 'get',
                 dataType: 'html',
                 success: function (data) {
@@ -63,10 +92,10 @@
             });
         });
 
-        $('#mahasiswaTable').on('click', '#btnEdit', function () {
+        mahasiswaTable.on('click', '#btnEdit', function () {
             var nimValue = $(this).val();
             $.ajax({
-                url: 'mahasiswa/edit',
+                url: 'mahasiswa/update',
                 type: 'get',
                 data: {nim: nimValue},
                 dataType: 'html',
@@ -74,6 +103,33 @@
                     $("#modalTitle").text("Edit Mahasiswa");
                     $("#modal-input").find(".modal-body").html(data);
                     $("#modal-input").modal('show');
+                }
+            });
+        });
+
+        $("#modal-input").on('submit', '#mahasiswaForm', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'mahasiswa/saveOrUpdate',
+                type: 'post',
+                data: $('#mahasiswaForm').serialize(),
+                dataType: 'html',
+                success: function () {
+                    $("#modal-input").modal('hide');
+                    location.reload();
+                }
+            });
+        });
+
+        mahasiswaTable.on('click', '#btnDelete', function (e) {
+            e.preventDefault();
+            let nimValue = $(this).val();
+            $.ajax({ //Start ajax delete
+                url: 'mahasiswa/delete',
+                type: 'get',
+                data: {nim: nimValue},
+                success: function () {
+                    location.reload();
                 }
             });
         });
