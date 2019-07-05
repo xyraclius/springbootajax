@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<form id="mahasiswaForm" method="post" th:action="@{mahasiswa/form/saveOrUpdate}" th:object="${mahasiswaModel}">
+
+    <input id="nim" th:name="@{nim}" th:value="*{nim}" type="hidden"/>
+
+    <div class="form-group">
+        <label class="control-label" for="nama">Nama</label>
+        <input autocomplete="off" class="form-control" id="nama"
+               placeholder="Nama Anda" th:name="@{nama}" th:value="*{nama}"
+               title="Nama Mahasiswa" type="text"/>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="jurusan">Jurusan</label>
+        <input autocomplete="off" class="form-control" id="jurusan"
+               name="jurusan" placeholder="Jurusan Anda" th:name="@{jurusan}" th:value="*{jurusan}"
+               title="Jurusan Mahasiswa" type="text"/>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+        <button class="btn btn-primary" type="submit">Save Or Update</button>
+    </div>
+</form>
+</html>
